@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const autocomplete = require('inquirer-autocomplete-prompt');
 var fuzzy = require('fuzzy');
+var htmlToText = require('html-to-text');
+
 
 inquirer.registerPrompt('autocomplete', autocomplete);
 
@@ -33,6 +35,12 @@ const fileFromDirectory = (directory, options) => {
 	}
 
 	opts.source = matchFiles(directory, opts.match)
+
+	// Potential solution for previewing
+	// On a certain key press (spacebar?) show preview of file
+	// convert markdown to html with showdown pkg
+	// then render with htmlToTextfromString
+	// release of spacebar returns user to previous view
 
 	return inquirer.prompt(opts);
 }
