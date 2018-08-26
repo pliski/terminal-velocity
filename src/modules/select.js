@@ -4,12 +4,13 @@ var fuzzy = require('fuzzy');
 
 inquirer.registerPrompt('autocomplete', autocomplete);
 
-function searchFiles(directory) {
+function matchFiles(directory = [], extract = () => {}) {
+
 	const options = {
-		extract: (file) => file.content
+		extract
 	}
-	return (answers, input) => {
-		input = input || '';
+
+	return (answers, input = '') => {
 		return new Promise((resolve) => {
 			var fuzzyResult = fuzzy.filter(input, directory, options);
 			resolve(
@@ -21,23 +22,21 @@ function searchFiles(directory) {
 	}
   }
 
-const search = (directory) => {
-	return inquirer.prompt([
-		{
-			type: 'autocomplete',
-			name: 'file',
-			message: 'Search/Create New File:',
-			source: searchFiles(directory),
-			pageSize: 4,
-		}
-	]);
-}
+const fileFromDirectory = (directory, options) => {
+	const opts = {
+		type: 'autocomplete',
+		name: 'file',
+		message: 'Search or Create New:',
+		match: (file) => file.content,
+		pageSize: 4,
+		...options
+	}
 
+	opts.source = matchFiles(directory, opts.match)
 
-const init = (directory) => {
-	return search(directory);
+	return inquirer.prompt(opts);
 }
 
 module.exports = {
-	init
+	fileFromDirectory
 }

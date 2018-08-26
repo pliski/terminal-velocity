@@ -1,11 +1,11 @@
 
 const dir = require('./modules/directory.js');
-const search = require('./modules/search.js').init;
+const select = require('./modules/select.js');
 	
 const init = async (options) => {
 	let directory = await dir.create(options);
-	let selected = await search(directory);
-	console.log(selected)
+	let selectedFile = await select.fileFromDirectory(directory);
+	console.log(selectedFile)
 }
 
 module.exports = {
