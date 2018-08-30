@@ -2,23 +2,27 @@ const inquirer = require('inquirer');
 const autocomplete = require('inquirer-autocomplete-prompt');
 var fuzzy = require('fuzzy');
 var htmlToText = require('html-to-text');
+const style = require('ansi-styles');
 
 
 inquirer.registerPrompt('autocomplete', autocomplete);
 
-function matchFiles(directory = [], extract = () => {}) {
+function matchFiles(files = [], extract = () => {}) {
 
 	const options = {
-		extract
+		extract,
+		pre: style.green.open,
+		post: style.green.close
 	}
 
 	return (answers, input = '') => {
 		return new Promise((resolve) => {
-			var fuzzyResult = fuzzy.filter(input, directory, options);
 			resolve(
-				fuzzyResult.map(function(el) {
-					return el.original.path;
-				})
+				fuzzy
+					.filter(input, files, options)
+					.map((file) => {
+						return file.string
+					})
 			);
 		});
 	}
@@ -30,16 +34,19 @@ const fileFromDirectory = (directories, options) => {
 		name: 'file',
 		message: 'Search or Create New:',
 		match: (file) => file.content,
-		pageSize: 4,
+		suggestOnly: true,
+		pageSize: 100,
 		...options
 	}
 
 	// create name with directory tag
 	// use in source as name that appears
 
-	console.log(directories)
+	const files = directories
+					.map((directory) => directory.files)
+					.reduce((groupArr, dirArr) => [...groupArr, ...dirArr])
 
-	opts.source = matchFiles(directory, opts.match)
+	opts.source = matchFiles(files, opts.match)
 
 	return inquirer.prompt(opts);
 }
