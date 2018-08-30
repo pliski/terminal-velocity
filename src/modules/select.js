@@ -24,7 +24,7 @@ function matchFiles(directory = [], extract = () => {}) {
 	}
   }
 
-const fileFromDirectory = (directory, options) => {
+const fileFromDirectory = (directories, options) => {
 	const opts = {
 		type: 'autocomplete',
 		name: 'file',
@@ -34,13 +34,12 @@ const fileFromDirectory = (directory, options) => {
 		...options
 	}
 
-	opts.source = matchFiles(directory, opts.match)
+	// create name with directory tag
+	// use in source as name that appears
 
-	// Potential solution for previewing
-	// On a certain key press (spacebar?) show preview of file
-	// convert markdown to html with showdown pkg
-	// then render with htmlToTextfromString
-	// release of spacebar returns user to previous view
+	console.log(directories)
+
+	opts.source = matchFiles(directory, opts.match)
 
 	return inquirer.prompt(opts);
 }

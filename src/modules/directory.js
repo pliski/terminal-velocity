@@ -3,29 +3,33 @@ const recursive = require('recursive-readdir');
 const path = require('path');
 const promisify = require('util').promisify;
 
-const readFile = promisify(fs.readFile)
+const readFile = promisify(fs.readFile);
 
 const findFiles = async (directory) => {
   return await recursive(directory);
 }
 
-const getDirectoryContent = (files, root) => {
+const getContentOfFiles = (files, root) => {
   return Promise.all(files.map(async (file) => {
     return {
-      path: path.relative(root, file),
-      absPath: file,
+      name: path.relative(file, root),
       content: await readFile(file, 'utf8')
     }
-  }))
+  })).catch(console.error);
 }
 
-const create = async function (options) {
+const create = function (directoryPaths) {
+  const root = process.cwd();
 
-  const root = path.resolve(process.cwd(), options.path || '.');
-  const files = await findFiles(root);
-  const directory = getDirectoryContent(files, root)
-
-  return directory
+  return Promise.all(directoryPaths.map(async (dirPath) => {
+    const absPath = `${root}/${dirPath}`;
+    const files = await findFiles(absPath);
+    return {
+      absPath,
+      dirPath,
+      files: await getContentOfFiles(files, absPath)
+    }
+  })).catch(console.error);
 };
 
 module.exports = {
