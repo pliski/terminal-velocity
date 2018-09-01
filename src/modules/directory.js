@@ -17,26 +17,25 @@ const getContentStr = async (file) => {
   return raw.replace(/\r?\n|\r|\t/g, " "); // removing new lines and tabs
 }
 
-const getDirStr = (relPath = '', formattedRoot = '') => {
-  let relPathWithoutFileName = relPath.substr(0, relPath.lastIndexOf('/'));
-  return relPathWithoutFileName ? `${formattedRoot}/${relPathWithoutFileName}` : formattedRoot;
+const getDirStr = (file, directory) => {
+  let relPathWithoutFileName = file.substring(0, file.lastIndexOf('/'));
+  return relPathWithoutFileName.substring(relPathWithoutFileName.indexOf(directory) + directory.length + 1);
 }
 
-const getNameStr = (relPath = '') => {
-  return relPath.substr(relPath.lastIndexOf('/') + 1)
+const getNameStr = (file) => {
+  return file.substring(file.lastIndexOf('/') + 1)
 }
 
-const getFileContent = (files, root) => {
-  let formattedRoot = root.replace(/[^\w]*/, ''); // remove everything before first word char
+const getFileContent = (files, directory) => {
   return Promise.all(files.map(async (file) => {
-    let relPath = path.relative(root, file);
-
-    let name = strs.format(getNameStr(relPath), 'name');
-    let directory = strs.format(getDirStr(relPath, formattedRoot), 'directory');
-    let content = strs.format(await getContentStr(file), 'content');
+    let name = getNameStr(file);
+    let subDir = getDirStr(file, directory);
+    let content = await getContentStr(file);
 
     return {
-      content: `${name} ${directory} ${content}`,
+      name,
+      absPath: file,
+      content: `${name} ${directory} ${subDir} ${content}`,
     }
   })).catch(console.error);
 }
@@ -45,12 +44,13 @@ const create = function (directoryPaths) {
   const root = process.cwd();
 
   return Promise.all(directoryPaths.map(async (dirPath) => {
+    const directory = dirPath.replace(/[^\w]*/, '');
     const absPath = `${root}/${dirPath}`;
     const files = await findFiles(absPath);
     return {
       absPath,
-      dirPath,
-      files: await getFileContent(files, dirPath)
+      directory,
+      files: await getFileContent(files, directory)
     }
   })).catch(console.error);
 };
