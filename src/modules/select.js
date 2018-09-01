@@ -2,10 +2,13 @@ const inquirer = require('inquirer');
 const autocomplete = require('inquirer-autocomplete-prompt');
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
+
+const cleaner = require('./cleaner');
+const splitter = require('./splitter').split;
 const strs = require('./strings');
 
+
 // TODO:
-// create module that will split string into categories (name, direcotry, content)
 // open file if one is selected
 // create new file if one is not
 // select/create new directory for new files
@@ -15,11 +18,10 @@ const strs = require('./strings');
 inquirer.registerPrompt('autocomplete', autocomplete);
 
 const formatResults = (str) => {
-	let splitStr = str.split(' ');
+	let splitStr = splitter(str);
+	let { name, directory, subDir, content } = splitStr;
 
-	let [name, directory, ...content] = splitStr;
-
-	return `${strs.format(name, 'name')} ${strs.format(directory, 'directory')} ${strs.format(content.join(' '), 'content')}`
+	return `${strs.format(name, 'name')} ${strs.format(directory, 'directory')} ${strs.format(subDir, 'subDir')} ${strs.format(content, 'content')}`
 }
 
 function matchFiles(files = [], extract = () => {}) {
@@ -32,11 +34,9 @@ function matchFiles(files = [], extract = () => {}) {
 
 	return (answers, input = '') => {
 		return new Promise((resolve) => {
-			let results = fuzzy.filter(input, files, options).map((file) => file.string)
+			let cleansedFiles = files.map(cleaner.cleanFile);
+			let results = fuzzy.filter(input, cleansedFiles, options).map((file) => file.string)
 			let formattedResults = results.map(formatResults);
-			// if possible remove all asci characters that arent the fuzzy matches
-			// use flag character to identify which part of the string we are matching (name, path, or content)
-			// rewrap the results with the right colorization
 			resolve(formattedResults)
 		});
 	}
@@ -48,7 +48,6 @@ const fileFromDirectory = (directories, options) => {
 		name: 'file',
 		message: 'Search or Create New:',
 		match: (file) => file.content,
-		suggestOnly: false,
 		pageSize: 100,
 		...options
 	}
