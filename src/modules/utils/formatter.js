@@ -7,10 +7,10 @@ const typeColors = {
 	'content': chalk.gray
 }
 
-const format = (str, type) => {
+const colorize = (str, type) => {
 	return typeColors[type] ? typeColors[type](str) : str
 }
 
 module.exports = {
-	format
+	colorize
 }

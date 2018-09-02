@@ -1,6 +1,6 @@
 const stripAnsi = require('strip-ansi');
 
-const cleanFile = (file = {}) => {
+const cleanFileObject = (file = {}) => {
 	return Object.keys(file).reduce((obj, prop) => {
 		return {
 			...obj,
@@ -10,5 +10,5 @@ const cleanFile = (file = {}) => {
 }
 
 module.exports = {
-	cleanFile
+	cleanFileObject
 }

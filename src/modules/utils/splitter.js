@@ -1,4 +1,4 @@
-const split = (str) => {
+const splitStr = (str = '') => {
 	let splitStr = str.split(' ')
 	let [name, directory, subDir, ...content] = splitStr;
 	content = content.join(' ');
@@ -12,5 +12,5 @@ const split = (str) => {
 }
 
 module.exports = {
-	split
+	splitStr
 }

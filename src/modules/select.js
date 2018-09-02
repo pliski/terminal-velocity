@@ -3,29 +3,24 @@ const autocomplete = require('inquirer-autocomplete-prompt');
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
 
-const cleaner = require('./cleaner');
-const splitter = require('./splitter').split;
-const strs = require('./strings');
+const cleanFileObject = require('./utils/cleaner').cleanFileObject;
+const splitStr = require('./utils/splitter').splitStr;
+const colorize = require('./utils/formatter').colorize;
 
+const resolver  = require('./utils/resolver').resolver();
+inquirer.registerPrompt('autocomplete', autocomplete);
 
 // TODO:
-// open file if one is selected
 // create new file if one is not
 // select/create new directory for new files
 // figure out how to do local and global directories
 
-
-inquirer.registerPrompt('autocomplete', autocomplete);
-
 const formatResults = (str) => {
-	let splitStr = splitter(str);
-	let { name, directory, subDir, content } = splitStr;
-
-	return `${strs.format(name, 'name')} ${strs.format(directory, 'directory')} ${strs.format(subDir, 'subDir')} ${strs.format(content, 'content')}`
+	let { name, directory, subDir, content } = splitStr(str);
+	return `${colorize(name, 'name')} ${colorize(directory, 'directory')} ${colorize(subDir, 'subDir')} ${colorize(content, 'content')}`
 }
 
 function matchFiles(files = [], extract = () => {}) {
-
 	const options = {
 		extract,
 		pre: styles.green.open,
@@ -34,9 +29,11 @@ function matchFiles(files = [], extract = () => {}) {
 
 	return (answers, input = '') => {
 		return new Promise((resolve) => {
-			let cleansedFiles = files.map(cleaner.cleanFile);
+			let cleansedFiles = files.map(cleanFileObject);
 			let results = fuzzy.filter(input, cleansedFiles, options).map((file) => file.string)
 			let formattedResults = results.map(formatResults);
+			
+			resolver.listener.listen(formattedResults);
 			resolve(formattedResults)
 		});
 	}
@@ -59,10 +56,12 @@ const fileFromDirectory = (directories, options) => {
 					.reduce((groupArr, dirArr) => [...groupArr, ...dirArr])
 
 	opts.source = matchFiles(files, opts.match)
+	
+	const promptPromise = inquirer.prompt(opts);
 
-	return inquirer.prompt(opts);
+	resolver.subscribe(promptPromise);
+	return resolver.promise;	
 }
-
 module.exports = {
 	fileFromDirectory
 }
