@@ -1,10 +1,10 @@
 const splitStr = (str = '') => {
-	let splitStr = str.split(' ')
-	let [name, directory, subDir, ...content] = splitStr;
+	let splitStr = str.split(' ');
+	let [base, directory, subDir, ...content] = splitStr;
 	content = content.join(' ');
 
 	return {
-		name,
+		base,
 		directory,
 		subDir,
 		content

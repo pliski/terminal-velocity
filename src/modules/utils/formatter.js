@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 
 const typeColors = {
-	'name': chalk.white,
+	'base': chalk.white,
 	'directory': chalk.blue,
 	'subDir': chalk.yellow,
 	'content': chalk.gray

@@ -16,8 +16,8 @@ inquirer.registerPrompt('autocomplete', autocomplete);
 // figure out how to do local and global directories
 
 const formatResults = (str) => {
-	let { name, directory, subDir, content } = splitStr(str);
-	return `${colorize(name, 'name')} ${colorize(directory, 'directory')} ${colorize(subDir, 'subDir')} ${colorize(content, 'content')}`
+	let { base, directory, subDir, content } = splitStr(str);
+	return `${colorize(base, 'base')} ${colorize(directory, 'directory')} ${colorize(subDir, 'subDir')} ${colorize(content, 'content')}`
 }
 
 function matchFiles(files = [], extract = () => {}) {
@@ -49,8 +49,6 @@ const fileFromLibrary = (directories, options) => {
 		...options
 	}
 
-	// create name with directory tag
-	// use in source as name that appears
 	const files = directories
 					.map((directory) => directory.files)
 					.reduce((groupArr, dirArr) => [...groupArr, ...dirArr])

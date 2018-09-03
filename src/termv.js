@@ -9,13 +9,14 @@ const init = async (paths) => {
 	let selectedFile = await select.fileFromLibrary(library);
 	let cleanSelectedFile = cleanFileObject(selectedFile).file; // remove ansi characters
 
-    let { name: nameStr, directory: dirStr } = splitStr(cleanSelectedFile); // splits file string into name, directory, subdirectories, and file content
-	let directory = library.find((dir) => dir.directory === dirStr);
+    let { base: selectedBase, directory: selectedDirectory } = splitStr(cleanSelectedFile); // splits file string into name, directory, subdirectories, and file content
+	
 
-	if (!directory) { // new files wont have directory
+	if (!selectedDirectory) { // new files wont have directory
 		console.log('newfile') 
 	} else {
-		let file = directory.files.find((file) => file.name === nameStr);
+		let directory = library.find((lib) => lib.directory === selectedDirectory);
+		let file = directory.files.find((file) => file.base === selectedBase);
 		editor.openFile(file.absPath);
 	}
 }	
