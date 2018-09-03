@@ -39,7 +39,7 @@ function matchFiles(files = [], extract = () => {}) {
 	}
   }
 
-const fileFromDirectory = (directories, options) => {
+const fileFromLibrary = (directories, options) => {
 	const opts = {
 		type: 'autocomplete',
 		name: 'file',
@@ -63,5 +63,5 @@ const fileFromDirectory = (directories, options) => {
 	return resolver.promise;	
 }
 module.exports = {
-	fileFromDirectory
+	fileFromLibrary
 }
