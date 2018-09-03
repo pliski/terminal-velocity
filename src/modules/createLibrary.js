@@ -1,7 +1,7 @@
 const crawler = require('./utils/crawler');
 const path = require('path');
 
-const create = function (directoryPaths) {
+const fromPaths = function (directoryPaths) {
   const root = process.cwd();
 
   return Promise.all(directoryPaths.map(async (dirPath) => {
@@ -21,5 +21,5 @@ const create = function (directoryPaths) {
 };
 
 module.exports = {
-  create
+  fromPaths
 };

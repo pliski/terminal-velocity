@@ -10,11 +10,6 @@ const colorize = require('./utils/formatter').colorize;
 const resolver  = require('./utils/resolver').resolver();
 inquirer.registerPrompt('autocomplete', autocomplete);
 
-// TODO:
-// create new file if one is not
-// select/create new directory for new files
-// figure out how to do local and global directories
-
 const formatResults = (str) => {
 	let { base, directory, subDir, content } = splitStr(str);
 	return `${colorize(base, 'base')} ${colorize(directory, 'directory')} ${colorize(subDir, 'subDir')} ${colorize(content, 'content')}`
@@ -39,7 +34,7 @@ function matchFiles(files = [], extract = () => {}) {
 	}
   }
 
-const fileFromLibrary = (directories, options) => {
+const fromLibrary = (directories, options) => {
 	const opts = {
 		type: 'autocomplete',
 		name: 'file',
@@ -51,7 +46,7 @@ const fileFromLibrary = (directories, options) => {
 
 	const files = directories
 					.map((directory) => directory.files)
-					.reduce((groupArr, dirArr) => [...groupArr, ...dirArr])
+					.reduce((files, fileArr) => [...files, ...fileArr])
 
 	opts.source = matchFiles(files, opts.match)
 	
@@ -59,7 +54,8 @@ const fileFromLibrary = (directories, options) => {
 
 	resolver.subscribe(promptPromise);
 	return resolver.promise;	
-}
+};
+
 module.exports = {
-	fileFromLibrary
+	fromLibrary
 }

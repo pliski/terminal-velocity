@@ -1,16 +1,16 @@
-const lib = require('./modules/library');
-const select = require('./modules/select');
+const createLibary = require('./modules/createLibrary');
+const selectFile = require('./modules/selectFile');
+
+
 const cleanFileObject = require('./modules/utils/cleaner').cleanFileObject;
 const splitStr = require('./modules/utils/splitter').splitStr;
 const editor = require('./modules/utils/editor');
 
 const init = async (paths) => {
-	let library = await lib.create(paths);
-	let selectedFile = await select.fileFromLibrary(library);
+	let library = await createLibary.fromPaths(paths);
+	let selectedFile = await selectFile.fromLibrary(library);
 	let cleanSelectedFile = cleanFileObject(selectedFile).file; // remove ansi characters
-
-    let { base: selectedBase, directory: selectedDirectory } = splitStr(cleanSelectedFile); // splits file string into name, directory, subdirectories, and file content
-	
+    let { base: selectedBase, directory: selectedDirectory } = splitStr(cleanSelectedFile); // splits file string into base, directory, subdirectories, and content
 
 	if (!selectedDirectory) { // new files wont have directory
 		console.log('newfile') 
