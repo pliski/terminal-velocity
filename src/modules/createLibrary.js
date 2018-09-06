@@ -5,17 +5,17 @@ const fromPaths = function (directoryPaths) {
   const root = process.cwd();
 
   return Promise.all(directoryPaths.map(async (dirPath) => {
-    const directory = path.normalize(dirPath);
-    const absPath = `${root}/${directory}`;
+    const base = path.normalize(dirPath);
+    const absPath = `${root}/${base}`;
 
     const subDirectories = await crawler.findDirectories(absPath);
     const files = await crawler.findFiles(absPath);
 
     return {
       absPath,
-      directory,
+      base,
       subDirectories,
-      files: await crawler.getFileContent(files, directory, absPath)
+      files: await crawler.getFileContent(files, base, absPath)
     }
   })).catch(console.error);
 };
