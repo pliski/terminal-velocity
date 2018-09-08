@@ -18,7 +18,7 @@ const queue = (library) => {
 		prompt.ui.close();
 		answers = [...answers, selection];
 
-		if (!questions.length){
+		if (!questions.length || (selection.file && !selection.new)){
 			res(answers)
 		} else {
 			queueNext(selection);
