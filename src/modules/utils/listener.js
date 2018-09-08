@@ -1,24 +1,30 @@
+const readline = require('readline');
+
 const listen = (dispatch) => {
-	const readline = require('readline');
 	const rl = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout
 	});
-
+	
 	let listening = false;
-	let suggested = []
+	let currentResults = []
+	let currentName = '';
 
-	return (results) => {
-		suggested = results;
+	return (name, results) => {
+		currentResults = results;
+		currentName = name;
 		if (!listening) {
 			listening = true;
-			rl.on('line', (input) => {
-				if (suggested.length) {
+			rl.once('line', (input) => {
+				if (currentResults.length) {
 					return false;
 				} else {
-					dispatch(input)
+					dispatch({
+						[currentName]: input,
+						new: true
+					})
 				}
-			});	
+			})
 		}
 	}
 }

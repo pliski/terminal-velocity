@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const listener = require('./listener').listen;
+const listener = require('./listener');
 
 const selectFile = require('../selectFile').init;
 const selectDirectory = require('../selectDirectory').init;
@@ -25,10 +25,10 @@ const queue = (library) => {
 		}
 	}
 
-	let hotListener = listener(makeSelection);
-
+	
 	const getNextQuestion = (prev) => {
 		let next = questions.shift();
+		let hotListener = listener.listen(makeSelection);
 		return next(hotListener, library, prev);
 	}
 
