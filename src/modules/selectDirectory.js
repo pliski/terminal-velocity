@@ -1,7 +1,7 @@
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
 
-function matchDirectories(listener, directories = [], extract = () => {}) {
+function matchDirectories({listener, directories, name, extract}) {
 	const options = {
 		extract,
 		pre: styles.green.open,
@@ -11,7 +11,7 @@ function matchDirectories(listener, directories = [], extract = () => {}) {
 	return (answers, input = '') => {
 		return new Promise((resolve) => {
 			let results = fuzzy.filter(input, directories, options).map((dir) => dir.string)
-			listener(results);
+			listener(name, results);
 			resolve(results)
 		});
 	}
@@ -19,12 +19,22 @@ function matchDirectories(listener, directories = [], extract = () => {}) {
 
   const init = (listener, library) => {
 	const directories = library.map((directory) => directory.base);
+	const name = 'directory';
+	const matchOn = {
+		listener,
+		directories,
+		name,
+		extract: (dir) => dir
+	}
+
+
+	listener(name,[]);
 
 	const opts = {
 		type: 'autocomplete',
 		name: 'directory',
 		message: 'Search or Create New Directory:',
-		source: matchDirectories(listener, directories, (dir) => dir),
+		source: matchDirectories(matchOn),
 		pageSize: 100,
 	}
 
