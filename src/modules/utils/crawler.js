@@ -39,6 +39,7 @@ const getFileContent = (files, dirName, dirRoot) => {
 
 		return {
 			base,
+			subDir,
 			absPath: file,
 			content: `${base} ${dirName} ${subDir} ${content}`,
 		}
