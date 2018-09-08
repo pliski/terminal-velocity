@@ -1,7 +1,6 @@
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
 
-const cleanFileObject = require('./utils/cleaner').cleanFileObject;
 const splitStr = require('./utils/splitter').splitStr;
 const colorize = require('./utils/formatter').colorize;
 
@@ -20,8 +19,7 @@ const matchFiles = ({listener, name, files, extract}) => {
 
 	return (answers, input = '') => {
 		return new Promise((resolve, reject) => {
-			let cleansedFiles = files.map(cleanFileObject);
-			let results = fuzzy.filter(input, cleansedFiles, options).map((file) => file.string)
+			let results = fuzzy.filter(input, files, options).map((file) => file.string)
 			let formattedResults = results.map(formatResults);
 
 			listener(name, formattedResults);
