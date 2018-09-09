@@ -9,24 +9,26 @@ const splitStr = require('./modules/utils/splitter').splitStr;
 
 // TODO:
 // Split on something better than space
-// Handle name conflicts (maybe use a hash here)
 // Create data model that all other files can refer to (so if we want to change something in object, we change it once)
 // Make logic is solid (unit tests)
 // If adding new directory update termv directory config
 // Figure out local/global directories
+// Handle directory name conflicts (print name with path and split like we're doing for file)
 
 const init = async (paths) => {
 	const library = await createLibary.fromPaths(paths);
 	const promptQueue = queue(library);
 	promptQueue.queueNext();
 
-	let selectedItems = await promptQueue.promise;
-	let selected = selectedItems.reduce((acc, item) => {
+	let promptSelections = await promptQueue.promise;
+	let selected = promptSelections.reduce((acc, item) => {
 		Object.keys(item).forEach((key) => { 
 			acc[key] = item[key]
 		})
 		return acc;
 	}, {});
+
+	console.log(selected)
 
 	if (!selected.new) {
 		let cleanSelectedFile = stripAnsi(selected.file) ; // remove bad characters
@@ -40,11 +42,25 @@ const init = async (paths) => {
 						
 		editor.openFile(pathToFile);
 	} else {
+		let basePath = process.cwd();
+		let directories = [];
+
 		let fileWithExtension = path.extname(selected.file) ? selected.file : `${selected.file}.md`;
-		let existingDirectory = library.find((dir) => dir.base === selected.directory);
 		let subDirectories = selected.subDirectory ? selected.subDirectory.split('/') : [];
-		let basePath = existingDirectory ? existingDirectory.absPath : process.cwd();
-		let directories = existingDirectory ? subDirectories : [selected.directory, ...subDirectories];
+		let existingDirectory = library.find((dir) => dir.base === selected.directory);
+
+		if (existingDirectory) {
+			let existingSubDirectory = existingDirectory.subDirectories.find((dir) => dir === selected.subDirectory);
+
+			if (existingSubDirectory) {
+				basePath = path.join(existingDirectory.absPath, selected.subDirectory);
+			} else {
+				basePath = existingDirectory.absPath;
+				directories = subDirectories;
+			}
+		} else {
+			directories = [selected.directory, ...subDirectories]
+		}
 
 		editor.makeDirectories({
 			basePath,

@@ -1,7 +1,8 @@
+const config = require('../../config');
+
 const splitStr = (str = '') => {
-	let splitStr = str.split(' ');
-	let [base, directory, subDir, ...content] = splitStr;
-	content = content.join(' ');
+	let splitStr = str.split(config.splitChar);
+	let [base, directory, subDir, content] = splitStr;
 
 	return {
 		base,

@@ -3,6 +3,7 @@ const fs = require('fs');
 const recursive = require('recursive-readdir');
 const path = require('path');
 const promisify = require('util').promisify;
+const outputString = require('./outputString');
 
 const readFile = promisify(fs.readFile);
 
@@ -41,7 +42,7 @@ const getFileContent = (files, dirName, dirRoot) => {
 			base,
 			subDir,
 			absPath: file,
-			content: `${base} ${dirName} ${subDir} ${content}`,
+			content: outputString.create({base, dirName, subDir, content})
 		}
 	})).catch(console.error);
 }

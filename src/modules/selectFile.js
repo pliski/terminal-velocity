@@ -1,13 +1,13 @@
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
 
+const outputString = require('./utils/outputString');
 const splitStr = require('./utils/splitter').splitStr;
-const colorize = require('./utils/formatter').colorize;
 
 
 const formatResults = (str) => {
 	let { base, directory, subDir, content } = splitStr(str);
-	return `${colorize(base, 'base')} ${colorize(directory, 'directory')} ${colorize(subDir, 'subDir')} ${colorize(content, 'content')}`
+	return outputString.create({base, directory, subDir, content}, true);
 }
 
 const matchFiles = ({listener, name, files, extract}) => {
