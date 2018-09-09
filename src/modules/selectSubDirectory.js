@@ -1,7 +1,7 @@
 const fuzzy = require('fuzzy');
 const styles = require('ansi-styles');
 
-function matchSubDirectories({listener, name, directories, extract}) {
+function matchSubDirectories({listener, name, subDirectories, extract}) {
 	const options = {
 		extract,
 		pre: styles.green.open,
@@ -10,7 +10,7 @@ function matchSubDirectories({listener, name, directories, extract}) {
 
 	return (answers, input = '') => {
 		return new Promise((resolve) => {
-			let results = fuzzy.filter(input, directories, options).map((dir) => dir.string)
+			let results = fuzzy.filter(input, subDirectories, options).map((dir) => dir.string);
 			listener(name, results)
 			resolve(results)
 		});
@@ -27,15 +27,16 @@ const init = (listener, library, prev) => {
 	let name = 'subDirectory';
 	const matchOn = {
 		listener,
-		subDirectories,
 		name,
+		subDirectories,
 		extract: (subDir) => subDir
 	}
 							
 	const opts = {
+		type: 'autocomplete',
 		message: 'Search or Create New Sub-Directory:',
 		name,
-		match: matchSubDirectories(matchOn),
+		source: matchSubDirectories(matchOn),
 		pageSize: 100,
 	}
 
