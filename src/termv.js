@@ -8,11 +8,11 @@ const stripAnsi = require('strip-ansi');
 const splitStr = require('./modules/utils/splitter').splitStr;
 
 // TODO:
-// Split on something better than space
-// Create data model that all other files can refer to (so if we want to change something in object, we change it once)
-// Make logic is solid (unit tests)
+// Normalize property names
+// unit tests
+// Command line arguments (add directory to config, add subdirectories, add files, help command)
+// Figure out local/global directories (process.cwd, check for termv.config.js, merge with local)
 // If adding new directory update termv directory config
-// Figure out local/global directories
 // Handle directory name conflicts (print name with path and split like we're doing for file)
 
 const init = async (paths) => {
@@ -21,18 +21,16 @@ const init = async (paths) => {
 	promptQueue.queueNext();
 
 	let promptSelections = await promptQueue.promise;
-	let selected = promptSelections.reduce((acc, item) => {
-		Object.keys(item).forEach((key) => { 
+	let selected = promptSelections.reduce((acc, selection) => {
+		Object.keys(selection).forEach((key) => { 
 			acc[key] = item[key]
 		})
 		return acc;
 	}, {});
 
-	console.log(selected)
-
 	if (!selected.new) {
-		let cleanSelectedFile = stripAnsi(selected.file) ; // remove bad characters
-		let { base, directory, subDir } = splitStr(cleanSelectedFile); // splits file string into base, directory, subdirectories, and content
+		let cleanSelectedFile = stripAnsi(selected.file) ;
+		let { base, directory, subDir } = splitStr(cleanSelectedFile); 
 		let pathToFile = library.find((dir) => dir.base === directory)
 						.files.find((file) => {
 							if (file.base === base && file.subDir === subDir) {
