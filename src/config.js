@@ -1,3 +1,6 @@
 module.exports = {
-	splitChar: '\b'
+	splitChar: ' ',
+	notesDirectory: `${process.env.PWD}/notes`,
+	fileType: 'md',
+	editor: 'vi'
 }

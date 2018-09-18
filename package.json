@@ -12,6 +12,7 @@
     "termv": "./bin/termv.js"
   },
   "dependencies": {
+    "ansi-regex": "^3.0.0",
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
     "fuzzy": "^0.1.3",

@@ -1,10 +1,9 @@
 # macOS
 .DS_Store
+.vscode
 
 node_modules
 termv.config.js
 
-## Test directories
-wiki
-sub-directory
-
+## Note directories
+notes/
