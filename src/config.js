@@ -1,6 +1,9 @@
+const path = require('path');
+const notesDirectory = path.join(__dirname, '../notes')
+
 module.exports = {
 	splitChar: ' ',
-	notesDirectory: `${process.env.PWD}/notes`,
+	notesDirectory,
 	fileType: 'md',
 	editor: 'vi'
 }
