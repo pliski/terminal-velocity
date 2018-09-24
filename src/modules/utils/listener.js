@@ -8,6 +8,7 @@ const listen = () => {
 		output: process.stdout
 	});
 	
+	let listening = false;
 	let currentResults = [];
 	let currentLibrary = {};
 
@@ -17,26 +18,29 @@ const listen = () => {
 	}
 
 	const onSelected = (prompt) => {
-		rl.input.setRawMode(true)
-		rl.input.on('keypress', (str, key) => {
-			if (key.name === 'up' || key.name === 'down') {
-				let activePrompt = prompt.ui.activePrompt;
-				let selected = activePrompt.selected;
+		if (!listening) {
+			listening = true;
+			rl.input.setRawMode(true);
+			rl.input.on('keypress', (str, key) => {
+				if (key.name === 'up' || key.name === 'down') {
+					let activePrompt = prompt.ui.activePrompt;
+					let selected = activePrompt.selected;
 
-				let choices = activePrompt.currentChoices.realChoices.map((choice) => {
-					choice.name = formatter.hideContent(choice.name);
-					return choice
-				});
+					let choices = activePrompt.currentChoices.realChoices.map((choice) => {
+						choice.name = formatter.hideContent(choice.name);
+						return choice
+					});
 
-				if (choices.length) { // choices will be empty first time through after a new file is created
-					let selectedFile = choices[selected];
-					selectedFile.name = formatter.showContent(currentLibrary[stripAnsi(selectedFile.name)].display);
+					if (choices.length) { // choices will be empty first time through after a new file is created
+						let selectedFile = choices[selected];
+						selectedFile.name = formatter.showContent(currentLibrary[stripAnsi(selectedFile.name)].display);
 
-					activePrompt.render(); // render screen with updated choices
+						activePrompt.render(); // render screen with updated choices
+					}
+					
 				}
-				
-			}
-		})
+			})
+		}
 	}
 
 	const onEnter = (dispatch) => {
