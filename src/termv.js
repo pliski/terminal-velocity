@@ -13,7 +13,8 @@ const init = async () => {
 	const { name : selectedFile } = formatter.splitStr(formatter.clean(selected.file));
 	const filePath = `${directoryPath}/${selectedFile}.${config.fileType}`;
 
-	editor.openFile(config.editor, filePath)
+	await editor.openFile(config.editor, filePath);
+	init();
 }	
 
 module.exports = {
