@@ -9,11 +9,11 @@ From Notational Velocity:
 
 > NOTATIONAL VELOCITY is an application that stores and retrieves notes. It is an attempt to loosen the mental blockages to recording information and to scrape away the tartar of convention that handicaps its retrieval. The solution is by nature nonconformist.
 
-<img src="img/demo.gif" width="600px">
+<img src="https://raw.githubusercontent.com/campfighter/terminal-velocity/master/img/demo.gif" width="600px">
 
 ## Installation
 
-```npm install -g termv```
+```npm install -g terminal-velocity```
 
 ## Usage
 Once installed, simply run ```termv``` in your console
