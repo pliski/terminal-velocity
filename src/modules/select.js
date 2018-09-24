@@ -40,7 +40,7 @@ const init = (library, listener) => {
 		name: 'file',
 		source: matchFiles(library, listener),
 		message: 'Search or Create New File:',
-		pageSize: 100,
+		pageSize: 5,
 	}
 
 	return opts;
