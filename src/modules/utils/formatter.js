@@ -9,7 +9,7 @@ const clean = (str) => {
 const splitStr = (str) => {
 	return {
 		name: str.substr(0,str.indexOf(config.splitChar)) || str,
-		content: str.substr(str.indexOf(config.splitChar) + 1)
+		content: str.substr(str.indexOf(config.splitChar) + config.splitChar.length)
 	}
 }
 
