@@ -27,11 +27,14 @@ const listen = () => {
 					choice.name = formatter.hideContent(choice.name);
 					return choice
 				});
-				
-				let selectedFile = choices[selected];
-				selectedFile.name = formatter.showContent(currentLibrary[stripAnsi(selectedFile.name)].display);
 
-				activePrompt.render(); // render screen with updated choices
+				if (choices.length) { // choices will be empty first time through after a new file is created
+					let selectedFile = choices[selected];
+					selectedFile.name = formatter.showContent(currentLibrary[stripAnsi(selectedFile.name)].display);
+
+					activePrompt.render(); // render screen with updated choices
+				}
+				
 			}
 		})
 	}
