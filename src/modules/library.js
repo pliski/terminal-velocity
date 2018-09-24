@@ -13,6 +13,9 @@ const getFileContent = async (path) => {
 }
 
 const findFiles = async (directory) => {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory)
+  }
   return await recursive(directory);
 }
 
