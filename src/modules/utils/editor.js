@@ -1,13 +1,16 @@
 const childProcess = require('child_process');
 
 const openFile = (editor, file) => {
-	let child = childProcess.spawn(editor, [file], {
-		stdio: 'inherit'
-	});
-	
-	child.on('exit', function (e, code) {
-		console.log("finished");
-	});
+	return new Promise((resolve, reject) => {
+		let child = childProcess.spawn(editor, [file], {
+			stdio: 'inherit'
+		});
+		
+		child.on('exit', function (e, code) {
+			process.stdout.write('\033c\033[3J'); // clears the terminal
+			resolve();
+		});
+	})
 }
 
 module.exports = {
