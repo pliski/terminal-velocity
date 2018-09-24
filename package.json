@@ -1,7 +1,7 @@
 {
   "name": "terminal-velocity",
   "version": "1.1.4",
-  "description": "",
+  "description": "A command line note-taking interface combining elements of Notational Velocity and nvALT",
   "keywords": [],
   "author": "campfighter",
   "license": "ISC",
