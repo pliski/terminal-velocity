@@ -6,11 +6,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "infinityknife",
+  "author": "campfighter",
   "license": "ISC",
   "bin": {
-    "termv": "./bin/termv.js"
+    "termv": "bin/termv.js"
   },
+  "preferGlobal": true,
+  "main":"./src/termv.js",
   "dependencies": {
     "ansi-regex": "^3.0.0",
     "ansi-styles": "^3.2.1",
