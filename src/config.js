@@ -5,5 +5,5 @@ module.exports = {
 	splitChar: ' \b ',
 	notesDirectory,
 	fileType: 'md',
-	editor: 'vi'
+	editor: 'nano'
 }
