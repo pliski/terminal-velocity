@@ -16,7 +16,8 @@ const matchFiles = (library, listener) => {
 
 	return (answers, input = '') => {
 		return new Promise((resolve, reject) => {
-			let results = fuzzy.filter(input, searchableLibrary, options);
+			let cleanInput = input.replace(/\s/g, ''); // spaces in input breaks ability to split string at splitChar
+			let results = fuzzy.filter(cleanInput, searchableLibrary, options);
 
 			results.forEach((result) => {
 				currentLibrary[result.original.name].display = result.string;
