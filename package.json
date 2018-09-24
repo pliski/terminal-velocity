@@ -10,6 +10,7 @@
   },
   "preferGlobal": true,
   "main": "./src/termv.js",
+  "repository": "github:campfighter/terminal-velocity",
   "dependencies": {
     "ansi-styles": "^3.2.1",
     "chalk": "^2.4.1",
