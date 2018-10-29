@@ -1,6 +1,6 @@
 {
   "name": "terminal-velocity",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A command line note-taking interface combining elements of Notational Velocity and nvALT",
   "keywords": [],
   "author": "campfighter",
@@ -9,7 +9,7 @@
     "termv": "bin/termv.js"
   },
   "scripts": {
-   "termv": "bin/termv.js" 
+    "termv": "bin/termv.js"
   },
   "preferGlobal": true,
   "main": "./src/termv.js",
