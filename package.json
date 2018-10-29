@@ -8,9 +8,6 @@
   "bin": {
     "termv": "bin/termv.js"
   },
-  "scripts": {
-   "termv": "bin/termv.js" 
-  },
   "preferGlobal": true,
   "main": "./src/termv.js",
   "repository": "github:campfighter/terminal-velocity",
