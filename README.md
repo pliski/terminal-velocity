@@ -18,6 +18,17 @@ From Notational Velocity:
 ## Usage
 Once installed, simply run ```termv``` in your console
 
+## Configuration
+You can override the default settings by providing a `.termv` file in your home directory. The file must contain a valid JSON object.
+
+````
+{
+	"editor": "vim",
+	"fileType: "txt"
+}
+````
+
+
 ## Current Features
 
 1. **Modeless Operation**
