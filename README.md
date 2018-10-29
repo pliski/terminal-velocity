@@ -24,7 +24,7 @@ You can override the default settings by providing a `.termv` file in your home 
 ````
 {
 	"editor": "vim",
-	"fileType: "txt"
+	"fileType": "txt"
 }
 ````
 
