@@ -9,7 +9,8 @@
     "termv": "bin/termv.js"
   },
   "scripts": {
-    "termv": "bin/termv.js"
+    "local": "node bin/termv.js",
+    "debug": "node --inspect bin/termv.js"
   },
   "preferGlobal": true,
   "main": "./src/termv.js",
