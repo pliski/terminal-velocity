@@ -3,7 +3,7 @@ const homedir = require('os').homedir()
 
 const getFile = require('./modules/helpers').getFile;
 
-const notesDirectory = path.join(__dirname, '../notes')
+const notesDirectory = path.join(homedir, '.termv-notes')
 const userConfigPath = path.join(homedir, '.termv');
 
 const userConfig = getFile(userConfigPath).contents;
