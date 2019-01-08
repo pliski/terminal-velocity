@@ -12,7 +12,7 @@ const notesDirectory = path.join(homedir, userDirectory || '.termv-notes')
 module.exports = {
 	splitChar: ' \b ',
 	fileType: 'md',
-	editor: 'nano',
+	editor: 'vi',
 	...userConfig,
 	notesDirectory
 }
