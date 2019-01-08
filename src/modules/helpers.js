@@ -3,7 +3,7 @@ const fs = require('fs');
 const getFile = (path) => {
 	try {
 		return {
-			contents: JSON.parse(fs.readFileSync(path))
+			contents: fs.existsSync(path) ? JSON.parse(fs.readFileSync(path)) : ''
 		}
 	} catch (e) {
 		console.log(`Could not parse file: ${path} ${e}`)
