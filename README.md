@@ -24,9 +24,11 @@ You can override the default settings by providing a `.termv` file in your home 
 ````
 {
 	"editor": "vim",
-	"fileType": "txt"
+	"notesDirectory": "./notes"
 }
 ````
+**notesDirectory* is always relative to your home directory
+
 
 
 ## Current Features
